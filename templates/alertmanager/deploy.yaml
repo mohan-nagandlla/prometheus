@@ -1,0 +1,22 @@
+{{- if .Values.Alertmanager.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.Alertmanager.spec.replicas }}
+  version: {{ .Values.Alertmanager.spec.version }}
+  resources:
+    limits:
+      cpu: {{ .Values.Alertmanager.spec.resources.limits.cpu }}
+      memory: {{ .Values.Alertmanager.spec.resources.limits.memory }}
+    requests:
+      cpu: {{ .Values.Alertmanager.spec.resources.requests.cpu }}
+      memory: {{ .Values.Alertmanager.spec.resources.requests.memory }}
+  securityContext:
+    fsGroup: {{ .Values.Alertmanager.spec.securityContext.fsGroup }}
+    runAsGroup: {{ .Values.Alertmanager.spec.securityContext.runAsGroup }}
+    runAsNonRoot: {{ .Values.Alertmanager.spec.securityContext.runAsNonRoot }}
+    runAsUser: {{ .Values.Alertmanager.spec.securityContext.runAsUser }}
+{{- end}}

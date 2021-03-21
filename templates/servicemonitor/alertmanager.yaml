@@ -1,0 +1,19 @@
+{{- if .Values.serviceMonitor.alertmanager.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    purpose: {{ .Release.Name }}-prometheus
+  name: alertmanager
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+    - path: /metrics
+      port: web
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      alertmanager: {{ .Release.Name }}
+{{- end}}

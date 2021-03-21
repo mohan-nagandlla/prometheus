@@ -1,0 +1,23 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-prometheus
+  labels:
+    prometheus: {{ .Release.Name }}
+{{- if .Values.Prometheus.service.annotations }}
+  annotations:
+{{ toYaml .Values.Prometheus.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.Prometheus.service.type }}
+{{- if .Values.Prometheus.service.loadBalancerIP }}
+  loadBalancerIP: {{ toYaml .Values.Prometheus.service.loadBalancerIP }}
+{{- end }}
+  ports:
+  - name: web
+    port: {{ .Values.Prometheus.service.port }}
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    prometheus: {{ .Release.Name }}

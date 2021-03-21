@@ -1,0 +1,93 @@
+##### Prometheus Instance 
+
+Prometheus:
+  enabled: true
+  spec:
+    retention: 1d
+    replicas: 1
+    version: v2.25.1
+    resources:
+      limits:
+        cpu: "1"
+        memory: 3Gi
+      requests:
+        cpu: "1"
+        memory: 3G
+    securityContext:
+      fsGroup: 2000
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+############ you can use eigther static or dynamic allocation if you use dynamic make Persistent.name: {} or if you 
+#use static then make storage.storageClassName: {} and give the already created PV name at Persistent.name: <creted PV name>
+    storage:
+      storage: 400Mi
+      Persistent:
+        name: {}
+      storageClassName: sc-test
+  service:
+    port: 9090
+    type: LoadBalancer
+########## IF you type loadbalancer and if you want targeted IP then use below or else leave that
+    loadBalancerIP: {}
+    annotations: 
+      metallb.universe.tf/allow-shared-ip: smart
+    ingres:
+      enabled: true
+
+##### Alertmanager Instance
+
+Alertmanager:
+  enabled: true
+  spec:
+    replicas: 1
+    version: v0.21.0
+    resources:
+      limits:
+        cpu: 100m
+        memory: 400Mi
+      requests:
+        cpu: 100m
+        memory: 400Mi
+    securityContext:
+      fsGroup: 2000
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+  service:
+    annotations:
+      test: check
+    port: 9093
+    type: NodePort
+########## IF you type loadbalancer and if you want targeted IP then use below or else leave that 
+    loadBalancerIP: {}
+    ingres:
+      enabled: true
+  config:
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: 'smtp.yyyyyyy@gmail.com:25'
+      smtp_from: 'yyyyyyy@gmail.com'
+      smtp_require_tls: false
+    route:
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 5m
+      receiver: default-receiver
+    receivers:
+    - name: default-receiver
+      email_configs:
+        - to: 'yyyyyyy@gmail.com'
+          send_resolved: true
+
+### Service monitoring details to add scrap targets
+
+serviceMonitor:
+  apiserver:
+    enabled: true
+  prometheus:
+    enabled: true
+  kubelet:
+    enabled: true
+  alertmanager:
+    enabled: true

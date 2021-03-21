@@ -1,0 +1,14 @@
+{{- if .Values.Prometheus.service.ingres.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    layer: L4
+    protocol: TCP
+  name: ingress-prometheus-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  backend:
+    serviceName: {{ .Release.Name }}-prometheus
+    servicePort: {{ .Values.Prometheus.service.port }}
+{{- end }}

@@ -1,0 +1,19 @@
+{{- if .Values.serviceMonitor.prometheus.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    purpose: {{ .Release.Name }}-prometheus
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+    - path: /metrics
+      port: web
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      prometheus: {{ .Release.Name }}
+{{- end}}

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alertmanager-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  alertmanager.yaml: {{ tpl (toYaml .Values.Alertmanager.config) . | b64enc | quote }}

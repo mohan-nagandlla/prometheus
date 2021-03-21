@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-alertmanager
+  namespace: {{ .Release.Namespace }}
+{{- if .Values.Alertmanager.service.annotations }}
+  annotations:
+{{ toYaml .Values.Alertmanager.service.annotations | indent 4 }}
+{{- end }}
+  labels:
+    alertmanager: {{ .Release.Name }}
+spec:
+  type: {{ .Values.Alertmanager.service.type }}
+{{- if .Values.Alertmanager.service.loadBalancerIP }}
+  loadBalancerIP: {{ toYaml .Values.Alertmanager.service.loadBalancerIP }}
+{{- end }}
+  ports:
+  - name: web
+    port: {{ .Values.Alertmanager.service.port }}
+    protocol: TCP
+    targetPort: 9093
+  selector:
+    alertmanager: {{ .Release.Name }}

@@ -1,0 +1,14 @@
+{{- if .Values.Alertmanager.service.ingres.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    layer: L4
+    protocol: TCP
+  name: ingress-alertmanager-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  backend:
+    serviceName: {{ .Release.Name }}-alertmanager
+    servicePort: {{ .Values.Alertmanager.service.port }}
+{{- end }}
