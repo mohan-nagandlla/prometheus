@@ -5,7 +5,7 @@ Prometheus:
   spec:
     retention: 1d
     replicas: 1
-    version: v2.25.1
+    version: {} ################## if you dont want any specified version then leave as {} it will take latest version
     resources:
       limits:
         cpu: "1"
@@ -27,11 +27,10 @@ Prometheus:
       storageClassName: sc-test
   service:
     port: 9090
-    type: LoadBalancer
+    type: NodePort
 ########## IF you type loadbalancer and if you want targeted IP then use below or else leave that
     loadBalancerIP: {}
-    annotations: 
-      metallb.universe.tf/allow-shared-ip: smart
+    annotations: {}
     ingres:
       enabled: true
 
@@ -41,7 +40,7 @@ Alertmanager:
   enabled: true
   spec:
     replicas: 1
-    version: v0.21.0
+    version: {} ################## if you dont want any specified version then leave as {} it will take latest version
     resources:
       limits:
         cpu: 100m
