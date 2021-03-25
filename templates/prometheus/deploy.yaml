@@ -52,6 +52,7 @@ spec:
 {{- if .Values.Prometheus.spec.storage.storageClassName }}
         storageClassName: {{ toYaml .Values.Prometheus.spec.storage.storageClassName }}
 {{- end }}
+{{- if .Values.Prometheus.spec.version }}
   version: {{ .Values.Prometheus.spec.version }}
 {{- end }}
-
+{{- end }}
