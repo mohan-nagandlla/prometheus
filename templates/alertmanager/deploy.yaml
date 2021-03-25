@@ -6,7 +6,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.Alertmanager.spec.replicas }}
+{{- if .Values.Alertmanager.spec.version }}
   version: {{ .Values.Alertmanager.spec.version }}
+{{- end }}
   resources:
     limits:
       cpu: {{ .Values.Alertmanager.spec.resources.limits.cpu }}
