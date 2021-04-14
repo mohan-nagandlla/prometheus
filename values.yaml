@@ -3,6 +3,8 @@
 Prometheus:
   enabled: true
   spec:
+    web:
+      title: "test prometheus"
     retention: 1d
     replicas: 1
     version: {} ################## if you dont want any specified version then leave as {} it will take latest version
